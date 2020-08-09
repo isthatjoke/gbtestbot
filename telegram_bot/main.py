@@ -1,5 +1,5 @@
 import requests
-import weather
+from weather import *
 
 
 #bot_api = 'https://api.telegram.org/bot1337111137:AAELaRg_ixU9Wnx7FYmjXL2TkL1XCAssCUQ/'
@@ -41,26 +41,36 @@ class BotHandler:
 bot = BotHandler(bot_token)
 
 greetings = 'Привет! Я новый бот и в данный момент я пока что умею только сообщать погоду в Вашем городе.\n' \
-            'Введите команду /weather'
+            'Введите команду /weather' \
+            ' Пока есть только Москва, Екат и Самара'
 
 
 def main():
     new_offset = None
     message_id = 0
+    id = ''
     while True:
         bot.get_updates(new_offset)
         last_update = bot.get_last_update()
         last_update_id = last_update['update_id']
-        last_command_type = last_update['message']['entities'][0]['type']
+        #last_command_type = last_update['message']['entities'][0]['type']
         last_text = last_update['message']['text']
         last_chat_id = last_update['message']['chat']['id']
         last_message_id = last_update['message']['message_id']
 
-        if last_command_type == 'bot_command' and last_text == '/start' and last_message_id != message_id:
+        if last_text == '/start' and last_message_id != message_id:
             bot.send_message(last_chat_id, greetings)
             message_id = last_message_id
-        elif last_command_type == 'bot_command' and last_text == '/weather':
-            pass
+        elif last_text == '/weather' and last_message_id != message_id:
+            bot.send_message(last_chat_id, 'Укажите город')
+            message_id = last_message_id
+            id = last_chat_id
+        if last_message_id != message_id and id == last_chat_id:
+            weather_answer = choose_the_city(last_text)
+            bot.send_message(last_chat_id, weather_answer)
+            message_id = last_message_id
+
+
 
         new_offset = last_update_id + 1
 

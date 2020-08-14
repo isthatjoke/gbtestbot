@@ -19,7 +19,7 @@ class Weather():
 
     def get_weather(self, city):
         main_get = 'http://api.openweathermap.org/data/2.5/weather?q=' + self.city + '&lang=ru&' \
-                   'units=metric' + api
+                   'units=metric&appid=' + api
         weather_answer = requests.post(main_get).json()
         weather_answer = f'Погода в городе {weather_answer["name"]} {weather_answer["main"]["temp"]} градусов,' \
                  f' {weather_answer["weather"][0]["description"]}'

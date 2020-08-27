@@ -41,7 +41,12 @@ cities = {
     "москва": "moscow",
     "екатеринбург": "ekaterinburg",
     "екат": "ekaterinburg",
-    "самара": "samara"
+    "екб": "ekaterinburg",
+    "ебург": "ekaterinburg",
+    "самара": "samara",
+    "питер": "saint petersburg",
+    "санкт-петербург": "saint petersburg",
+    "спб": "saint petersburg",
 }
 
 
@@ -50,6 +55,8 @@ def choose_the_city(text):
     if Weather.city in cities:
         Weather.city = cities[Weather.city]
         return Weather.get_weather(Weather, Weather.city)
+    else:
+        return f'Город указан некорректно или его пока нет в списке'
 
 
 def get_coord(lat, lon):
